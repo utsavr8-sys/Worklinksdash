@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UTSAV | Film Director & Assistant Director</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+          },
+          colors: {
+            cinema: {
+              950: '#070809',
+              900: '#0b0d10',
+              850: '#111317',
+              800: '#171a21',
+              700: '#232731',
+              accent: '#E5A93C', // warm cinematic amber
+              muted: '#8B949E'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Grain texture overlay */
+    .film-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 40;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Subtle glowing border */
+    .glow-border {
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 40px -15px rgba(0, 0, 0, 0.8);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glow-border:hover {
+      box-shadow: 0 0 0 1px rgba(229, 169, 60, 0.4), 0 25px 50px -12px rgba(229, 169, 60, 0.12);
+      transform: translateY(-3px);
+    }
+
+    /* Modal Backdrop Blur */
+    .backdrop-blur-cinema {
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    /* Custom subtle scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0d10;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232731;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #343b4a;
+    }
+  </style>
+</head>
+
+<body class="bg-cinema-950 text-neutral-200 antialiased selection:bg-cinema-accent selection:text-black min-h-screen relative font-sans">
+  
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <header class="sticky top-0 z-30 bg-cinema-950/85 backdrop-blur-md border-b border-neutral-800/80 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <a href="#" class="flex flex-col group">
+        <span class="font-display text-2xl tracking-[0.22em] font-extrabold text-white group-hover:text-cinema-accent transition-colors">UTSAV</span>
+        <span class="text-[10px] uppercase tracking-[0.28em] text-neutral-400 font-medium">Director &bull; Mumbai / Delhi</span>
+      </a>
+
+      <!-- Quick action desktop nav -->
+      <nav class="hidden md:flex items-center space-x-6 text-xs uppercase tracking-widest font-medium">
+        <a href="#showreel" class="text-neutral-300 hover:text-cinema-accent transition-colors">Showreel</a>
+        <a href="#works" class="text-neutral-300 hover:text-cinema-accent transition-colors">Works</a>
+        <a href="#treatments" class="text-neutral-300 hover:text-cinema-accent transition-colors">Decks</a>
+        <a href="https://drive.google.com/file/d/1TYVKPIxrzXxqlEh2qK9RcLy7iq0NUagM/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-full border border-neutral-700 hover:border-neutral-400 text-neutral-300 hover:text-white transition-all flex items-center gap-1.5">
+          <span>CV</span>
+          <svg class="w-3 h-3 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+        </a>
+        <a href="https://drive.google.com/file/d/1QP-G-Bd3iFIPZBwgnMhQQgPoQdCIoxiz/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="px-3.5 py-1.5 rounded-full border border-cinema-accent/50 text-cinema-accent hover:bg-cinema-accent hover:text-black transition-all flex items-center gap-1.5">
+          <span>PDF Portfolio</span>
+          <svg class="w-3 h-3 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+        </a>
+      </nav>
+
+      <!-- Mobile quick touch anchor -->
+      <div class="flex md:hidden items-center gap-2">
+        <a href="https://drive.google.com/file/d/1QP-G-Bd3iFIPZBwgnMhQQgPoQdCIoxiz/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="text-xs px-3 py-1.5 rounded-full bg-cinema-800 text-neutral-200 border border-neutral-700">PDF Portfolio</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col items-center text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cinema-850 border border-neutral-800 text-xs tracking-wider uppercase text-neutral-400 mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-cinema-accent animate-pulse"></span>
+          Available for Commercials, Fiction & Brand Films
+        </div>
+
+        <h1 class="font-display text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.08] mb-6">
+          Crafting visceral, evocative cinema for screen & brands.
+        </h1>
+
+        <p class="text-base sm:text-lg text-neutral-400 font-light max-w-2xl leading-relaxed mb-8">
+          Utsav is a Film Director & Assistant Director working across narrative cinema, high-impact commercials, and music playbacks with leading talent across Mumbai and Delhi.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-3.5 sm:gap-4">
+          <a href="#showreel" class="px-6 py-3 rounded-full bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-cinema-accent transition-colors flex items-center gap-2">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Play Showreel
+          </a>
+
+          <a href="https://drive.google.com/file/d/1TYVKPIxrzXxqlEh2qK9RcLy7iq0NUagM/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-full bg-cinema-850 hover:bg-cinema-800 text-neutral-200 border border-neutral-800 hover:border-neutral-600 font-medium text-xs tracking-wider uppercase transition-colors flex items-center gap-2">
+            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            Download CV
+          </a>
+
+          <button id="copyEmailBtn" class="px-5 py-3 rounded-full bg-cinema-850 hover:bg-cinema-800 text-neutral-200 border border-neutral-800 hover:border-neutral-600 font-medium text-xs tracking-wider uppercase transition-colors flex items-center gap-2">
+            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <span id="copyBtnText">Share Portfolio</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="showreel" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 mb-16">
+    <div class="relative rounded-3xl overflow-hidden bg-cinema-900 border border-neutral-800/90 glow-border group">
+      <div class="absolute top-4 left-6 z-10 flex items-center gap-3">
+        <span class="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[11px] font-semibold uppercase tracking-widest text-cinema-accent border border-cinema-accent/30">
+          Official Reel
+        </span>
+        <span class="hidden sm:inline text-xs text-neutral-400 font-medium">Utsav &bull; Director's Cut (Vimeo)</span>
+      </div>
+
+      <!-- 16:9 Aspect ratio responsive container -->
+      <div class="relative w-full aspect-video sm:aspect-[2.2/1] max-h-[640px] bg-black">
+        <iframe 
+          src="https://player.vimeo.com/video/1001194762?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+          class="absolute top-0 left-0 w-full h-full border-0" 
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
+          allowfullscreen 
+          title="Director Showreel">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <section id="works" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
+      <div>
+        <span class="text-xs uppercase tracking-[0.25em] text-cinema-accent font-semibold">Selected Works</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-1">Films, Commercials & Playbacks</h2>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-cinema-900 border border-neutral-800 max-w-full overflow-x-auto" id="filterContainer">
+        <button data-filter="all" class="filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-xl transition-all bg-white text-black">All Works</button>
+        <button data-filter="directed-film" class="filter-btn px-4 py-2 text-xs font-medium uppercase tracking-wider rounded-xl transition-all text-neutral-400 hover:text-white">Films (Dir.)</button>
+        <button data-filter="playback" class="filter-btn px-4 py-2 text-xs font-medium uppercase tracking-wider rounded-xl transition-all text-neutral-400 hover:text-white">Playbacks (Dir.)</button>
+        <button data-filter="commercial" class="filter-btn px-4 py-2 text-xs font-medium uppercase tracking-wider rounded-xl transition-all text-neutral-400 hover:text-white">Commercials & AD</button>
+      </div>
+    </div>
+
+    <!-- Works Grid -->
+    <div id="worksGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+      <!-- Items dynamically populated from JS with high performance YouTube thumbnail URLs & details -->
+    </div>
+  </section>
+
+  <section id="treatments" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-neutral-900">
+    <div class="mb-10">
+      <div class="flex items-center gap-2">
+        <span class="text-xs uppercase tracking-[0.25em] text-cinema-accent font-semibold">Development & Vision</span>
+        <span class="px-2 py-0.5 rounded text-[10px] bg-cinema-800 text-neutral-400 border border-neutral-700">7 Pitch Decks</span>
+      </div>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-1">Treatments & Director Pitch Decks</h2>
+      <p class="text-neutral-400 text-sm mt-2 max-w-2xl">
+        Lookbooks, moodboards, visual treatment docs and creative pitches developed for leading clients and brands.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="decksGrid">
+      <!-- Decks populated by JS -->
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-neutral-900">
+    <div class="bg-gradient-to-r from-cinema-900 via-cinema-850 to-cinema-900 border border-neutral-800 rounded-3xl p-8 sm:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+      <div class="max-w-xl text-center md:text-left">
+        <span class="text-xs font-semibold tracking-widest uppercase text-cinema-accent">Profiles & Official Credentials</span>
+        <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">Need detailed credits and resume?</h3>
+        <p class="text-neutral-400 text-sm mt-2">
+          Access the complete verified directorial and assistant director filmography, production contacts, and high-resolution portfolio deck.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+        <a href="https://drive.google.com/file/d/1TYVKPIxrzXxqlEh2qK9RcLy7iq0NUagM/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto text-center px-6 py-3.5 rounded-2xl bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-cinema-accent transition-all flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Open Official CV (PDF)
+        </a>
+        <a href="https://drive.google.com/file/d/1QP-G-Bd3iFIPZBwgnMhQQgPoQdCIoxiz/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto text-center px-6 py-3.5 rounded-2xl bg-cinema-800 hover:bg-cinema-700 text-white font-semibold text-xs tracking-wider uppercase border border-neutral-700 transition-all flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 text-cinema-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Directorial Portfolio
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-neutral-900 bg-cinema-950 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-neutral-500">
+      <div class="flex items-center gap-2">
+        <span class="font-display font-bold tracking-widest text-neutral-300">UTSAV</span>
+        <span>&bull;</span>
+        <span>Directing Narrative & Commercial Cinema</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Mumbai &bull; Delhi</span>
+        <span>&copy; <span id="currentYear"></span> All Rights Reserved</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="videoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 md:p-10 backdrop-blur-cinema bg-black/90 transition-opacity duration-300 opacity-0" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="relative w-full max-w-5xl bg-cinema-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl transition-all scale-95" id="modalCard">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-neutral-800 bg-cinema-950/80">
+        <div>
+          <span id="modalRole" class="text-[11px] font-semibold uppercase tracking-widest text-cinema-accent">Role</span>
+          <h3 id="modalTitle" class="text-base sm:text-lg font-bold text-white truncate max-w-md sm:max-w-xl">Project Title</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <a id="modalExternalLink" href="#" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-cinema-800 transition-colors" title="Watch on source site">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+          <button id="closeModalBtn" class="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-cinema-800 transition-colors" aria-label="Close modal">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Video Player Frame -->
+      <div class="relative w-full aspect-video bg-black">
+        <iframe id="videoIframe" class="w-full h-full border-0" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <!-- Modal Bottom Meta -->
+      <div class="px-6 py-3.5 bg-cinema-950/80 border-t border-neutral-800/80 flex items-center justify-between text-xs text-neutral-400">
+        <span id="modalSubtext">Official Project</span>
+        <button id="copyProjectLinkBtn" class="hover:text-cinema-accent transition-colors flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span>Copy Direct Link</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl bg-white text-black font-semibold text-xs tracking-wide shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <span id="toastMessage">Link copied to clipboard!</span>
+  </div>
+
+  <script>
+    // Set dynamic year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Data set of all video works
+    const worksData = [
+      // Directed: Films
+      {
+        id: 'chhaya',
+        title: 'Chhaya',
+        subtitle: 'Official Trailer',
+        category: 'directed-film',
+        badge: 'Directed : Film',
+        type: 'youtube',
+        videoId: 'JpZuAZ2YYIs',
+        url: 'https://www.youtube.com/watch?v=JpZuAZ2YYIs',
+        role: 'Director',
+        meta: 'Narrative Short / Film Festival Trailer'
+      },
+      {
+        id: 'scent-of-tulsi',
+        title: 'The Scent of Tulsi',
+        subtitle: 'Official Trailer',
+        category: 'directed-film',
+        badge: 'Directed : Film',
+        type: 'youtube',
+        videoId: 'CmYQ5eUEKUQ',
+        url: 'https://youtu.be/CmYQ5eUEKUQ',
+        role: 'Director',
+        meta: 'Drama / Independent Film'
+      },
+
+      // Directed: Playbacks
+      {
+        id: 'babuji-dheere',
+        title: 'Babuji Dheere Chalna',
+        subtitle: 'Reimagined Playback',
+        category: 'playback',
+        badge: 'Directed : Playback',
+        type: 'youtube',
+        videoId: 'WaDTePvpomQ',
+        url: 'https://youtu.be/WaDTePvpomQ',
+        role: 'Director',
+        meta: 'Cinematic Music Playback'
+      },
+      {
+        id: 'promise-ben-howard',
+        title: 'Promise by Ben Howard',
+        subtitle: 'Visual Playback',
+        category: 'playback',
+        badge: 'Directed : Playback',
+        type: 'youtube',
+        videoId: 'K_7EyvRVzY0',
+        url: 'https://youtu.be/K_7EyvRVzY0',
+        role: 'Director',
+        meta: 'Atmospheric Mood Piece'
+      },
+
+      // Assisted: TVC / DVC & Commercials
+      {
+        id: 'damensch-vicky',
+        title: 'DaMENSCH ft. Vicky Kaushal',
+        subtitle: 'Commercial Campaign',
+        category: 'commercial',
+        badge: 'Assisted : TVC',
+        type: 'youtube',
+        videoId: 'NFY1odzi0Ig',
+        url: 'https://www.youtube.com/watch?v=NFY1odzi0Ig',
+        role: 'Assistant Director',
+        meta: 'Starring Vicky Kaushal'
+      },
+      {
+        id: 'nourishing-farms',
+        title: 'Nourishing Farms ft. Milind Soman',
+        subtitle: 'Brand Campaign',
+        category: 'commercial',
+        badge: 'Assisted : DVC',
+        type: 'youtube',
+        videoId: 'kZL49s0BETk',
+        url: 'https://youtu.be/kZL49s0BETk',
+        role: 'Assistant Director',
+        meta: 'Starring Milind Soman'
+      },
+      {
+        id: 'klook-bharti',
+        title: 'Klook ft. Bharti Singh',
+        subtitle: 'Travel Campaign',
+        category: 'commercial',
+        badge: 'Associate Director',
+        type: 'youtube',
+        videoId: 'Zxf0tCazCLU',
+        url: 'https://youtu.be/Zxf0tCazCLU',
+        role: 'Associate Director',
+        meta: 'Starring Bharti Singh'
+      },
+      {
+        id: 'rajesh-masala',
+        title: 'Rajesh Masala ft. Sunny Deol',
+        subtitle: 'National TVC',
+        category: 'commercial',
+        badge: 'Assisted : TVC',
+        type: 'youtube',
+        videoId: 'z2Bdupyu520',
+        url: 'https://youtu.be/z2Bdupyu520',
+        role: 'Assistant Director',
+        meta: 'Starring Sunny Deol'
+      },
+      {
+        id: 'colgate-maxfresh-1',
+        title: 'Colgate MaxFresh (Film 01)',
+        subtitle: 'Fresh Energy Series',
+        category: 'commercial',
+        badge: 'Assisted : TVC',
+        type: 'youtube',
+        videoId: '8MF4lC916ic',
+        url: 'https://youtu.be/8MF4lC916ic',
+        role: 'Assistant Director',
+        meta: 'Colgate Commercial'
+      },
+      {
+        id: 'colgate-maxfresh-2',
+        title: 'Colgate MaxFresh (Film 02)',
+        subtitle: 'Fresh Energy Series',
+        category: 'commercial',
+        badge: 'Assisted : TVC',
+        type: 'youtube',
+        videoId: 'gSh_dkO9Km0',
+        url: 'https://youtu.be/gSh_dkO9Km0',
+        role: 'Assistant Director',
+        meta: 'Colgate Commercial'
+      },
+      {
+        id: 'colgate-maxfresh-3',
+        title: 'Colgate MaxFresh (Film 03)',
+        subtitle: 'Fresh Energy Series',
+        category: 'commercial',
+        badge: 'Assisted : TVC',
+        type: 'youtube',
+        videoId: '5xExaddQAJo',
+        url: 'https://youtu.be/5xExaddQAJo',
+        role: 'Assistant Director',
+        meta: 'Colgate Commercial'
+      },
+      {
+        id: 'rise-and-fall',
+        title: 'Rise and Fall',
+        subtitle: 'Promo Films Campaign',
+        category: 'commercial',
+        badge: 'Assisted : Promo',
+        type: 'youtube',
+        videoId: 'z5klqXxvz0o',
+        url: 'https://youtube.com/shorts/z5klqXxvz0o',
+        role: 'Assistant Director',
+        meta: '3 Promotional Short Films'
+      },
+      {
+        id: 'youva-stellar-1',
+        title: 'Youva Stellar Brand Film (01)',
+        subtitle: 'Stationery & Lifestyle',
+        category: 'commercial',
+        badge: 'Assisted : Commercial',
+        type: 'youtube',
+        videoId: 'Nyx_7Y7xf8s',
+        url: 'https://youtu.be/Nyx_7Y7xf8s',
+        role: 'Assistant Director',
+        meta: 'Brand Storytelling'
+      },
+      {
+        id: 'youva-stellar-2',
+        title: 'Youva Stellar Brand Film (02)',
+        subtitle: 'Stationery & Lifestyle',
+        category: 'commercial',
+        badge: 'Assisted : Commercial',
+        type: 'youtube',
+        videoId: 'Q3JLZKt-ZLQ',
+        url: 'https://youtu.be/Q3JLZKt-ZLQ',
+        role: 'Assistant Director',
+        meta: 'Brand Storytelling'
+      }
+    ];
+
+    // Data set for Pitch Decks & Treatments
+    const decksData = [
+      {
+        title: 'Always (Treatment Deck)',
+        director: 'Dir : Goldwin Fonseca',
+        link: 'https://canva.link/uhbn9c5hstoyuyu',
+        platform: 'Canva Presentation',
+        tag: 'Creative Treatment',
+        description: 'Atmospheric narrative visual presentation and lighting palette.'
+      },
+      {
+        title: 'Colgate MaxFresh Pitch',
+        director: 'Studio 404',
+        link: 'https://canva.link/r59fhcx53m65a37',
+        platform: 'Canva Deck',
+        tag: 'Commercial Campaign',
+        description: 'Vibrant youthful treatment deck focusing on freshness choreography.'
+      },
+      {
+        title: 'Commercial Treatment Deck',
+        director: 'Utsav Vision',
+        link: 'https://docs.google.com/presentation/d/1ovGKLDPm9i6qeT_a2wcMCI4Qwzzq_eX1hhwfTmT9ZZk/edit?usp=sharing',
+        platform: 'Google Slides',
+        tag: 'Director Treatment',
+        description: 'Comprehensive director boards, scene-by-scene blocking and tone mapping.'
+      },
+      {
+        title: 'Campaign Deck ft. Varun Dhawan',
+        director: 'Brand Commercial',
+        link: 'https://canva.link/vuyt0ep2ozzkpvv',
+        platform: 'Canva Deck',
+        tag: 'Celebrity Campaign',
+        description: 'High-energy treatment deck tailored for Varun Dhawan commercial.'
+      },
+      {
+        title: 'Multiple Brand Films Deck',
+        director: 'Multi-film Treatment',
+        link: 'https://canva.link/z32q86jh5wbsc2m',
+        platform: 'Canva Deck',
+        tag: 'Multi-Campaign',
+        description: 'Visual storyboard compilation for multi-film brand rollouts.'
+      },
+      {
+        title: 'CSR Campaign ft. Dia Mirza',
+        director: 'CSR Impact Film',
+        link: 'https://canva.link/gmjwkdbs7nwvif5',
+        platform: 'Canva Deck',
+        tag: 'Cause / Documentary',
+        description: 'Intimate visual poetry and cause-driven treatment featuring Dia Mirza.'
+      },
+      {
+        title: "Director's Vision Deck",
+        director: 'Directorial Slate',
+        link: 'https://www.canva.com/design/DAGWceMtGcE/mgcGcverySGvxVsTKzgo4A/view?utm_content=DAGWceMtGcE&utm_campaign=designshare&utm_medium=link&utm_source=viewer',
+        platform: 'Canva Presentation',
+        tag: 'Directorial Vision',
+        description: 'Aesthetic philosophy, cinematic lenses, frame ratios, and color grading.'
+      }
+    ];
+
+    const worksGrid = document.getElementById('worksGrid');
+
+    function renderWorks(filter = 'all') {
+      worksGrid.innerHTML = '';
+      
+      const filtered = filter === 'all' 
+        ? worksData 
+        : worksData.filter(item => item.category === filter);
+
+      filtered.forEach((work, index) => {
+        const card = document.createElement('div');
+        card.className = 'group relative flex flex-col rounded-2xl overflow-hidden bg-cinema-900/90 border border-neutral-800/80 glow-border cursor-pointer transition-all duration-300';
+        card.setAttribute('data-id', work.id);
+        
+        // High quality YouTube maxres thumbnail with fallback
+        const thumbUrl = `https://img.youtube.com/vi/${work.videoId}/hqdefault.jpg`;
+
+        card.innerHTML = `
+          <div class="relative w-full aspect-video overflow-hidden bg-cinema-850">
+            <img 
+              src="${thumbUrl}" 
+              alt="${work.title}" 
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              loading="lazy"
+              onerror="this.src='https://placehold.co/640x360/111317/E5A93C?text=${encodeURIComponent(work.title)}'"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-cinema-950 via-cinema-950/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+            
+            <!-- Play icon pill on hover -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-12 h-12 rounded-full bg-white/90 text-black flex items-center justify-center shadow-lg transform translate-y-2 opacity-90 group-hover:translate-y-0 group-hover:scale-110 group-hover:bg-cinema-accent transition-all duration-300">
+                <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+
+            <!-- Role Badge -->
+            <div class="absolute top-3 left-3">
+              <span class="px-2.5 py-1 rounded-md text-[10px] uppercase font-bold tracking-wider bg-black/80 backdrop-blur-md text-cinema-accent border border-white/10">
+                ${work.badge}
+              </span>
+            </div>
+          </div>
+
+          <div class="p-5 flex flex-col justify-between flex-1">
+            <div>
+              <span class="text-[11px] uppercase tracking-wider text-neutral-400 font-medium">${work.meta}</span>
+              <h3 class="text-base font-bold text-white mt-1 group-hover:text-cinema-accent transition-colors">${work.title}</h3>
+              <p class="text-xs text-neutral-400 mt-1">${work.subtitle}</p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs text-neutral-400">
+              <span class="text-[11px] uppercase tracking-wider text-neutral-400">${work.role}</span>
+              <span class="text-cinema-accent group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 font-medium text-[11px]">
+                Watch <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => openModal(work));
+        worksGrid.appendChild(card);
+      });
+    }
+
+    const decksGrid = document.getElementById('decksGrid');
+
+    function renderDecks() {
+      decksGrid.innerHTML = '';
+      decksData.forEach(deck => {
+        const item = document.createElement('a');
+        item.href = deck.link;
+        item.target = '_blank';
+        item.rel = 'noopener noreferrer';
+        item.className = 'group block p-6 rounded-2xl bg-cinema-900/80 border border-neutral-800/80 hover:border-cinema-accent/40 transition-all duration-300 hover:-translate-y-1';
+
+        item.innerHTML = `
+          <div class="flex items-start justify-between gap-4">
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-cinema-800 text-cinema-accent border border-neutral-700">
+              ${deck.tag}
+            </span>
+            <div class="p-1.5 rounded-lg bg-cinema-800/60 text-neutral-400 group-hover:text-white group-hover:bg-cinema-accent group-hover:text-black transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </div>
+          </div>
+
+          <h4 class="text-base font-bold text-white mt-4 group-hover:text-cinema-accent transition-colors">${deck.title}</h4>
+          <p class="text-xs text-neutral-400 mt-1">${deck.director}</p>
+          <p class="text-xs text-neutral-400/90 mt-2.5 line-clamp-2 leading-relaxed">${deck.description}</p>
+
+          <div class="mt-4 pt-3 border-t border-neutral-800/70 flex items-center justify-between text-[11px] text-neutral-400">
+            <span>${deck.platform}</span>
+            <span class="text-cinema-accent group-hover:underline">View Presentation &rarr;</span>
+          </div>
+        `;
+        decksGrid.appendChild(item);
+      });
+    }
+
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Reset classes
+        filterButtons.forEach(b => {
+          b.className = 'filter-btn px-4 py-2 text-xs font-medium uppercase tracking-wider rounded-xl transition-all text-neutral-400 hover:text-white';
+        });
+        // Activate current
+        btn.className = 'filter-btn px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-xl transition-all bg-white text-black';
+        
+        const filter = btn.getAttribute('data-filter');
+        renderWorks(filter);
+      });
+    });
+
+    const videoModal = document.getElementById('videoModal');
+    const modalCard = document.getElementById('modalCard');
+    const videoIframe = document.getElementById('videoIframe');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalRole = document.getElementById('modalRole');
+    const modalSubtext = document.getElementById('modalSubtext');
+    const modalExternalLink = document.getElementById('modalExternalLink');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const copyProjectLinkBtn = document.getElementById('copyProjectLinkBtn');
+
+    let currentActiveWork = null;
+
+    function openModal(work) {
+      currentActiveWork = work;
+      modalTitle.textContent = work.title;
+      modalRole.textContent = work.badge;
+      modalSubtext.textContent = `${work.role} • ${work.meta}`;
+      modalExternalLink.href = work.url;
+
+      // Auto-play embed url
+      videoIframe.src = `https://www.youtube-nocookie.com/embed/${work.videoId}?autoplay=1&rel=0`;
+
+      videoModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      // Animation in
+      setTimeout(() => {
+        videoModal.classList.remove('opacity-0');
+        modalCard.classList.remove('scale-95');
+        modalCard.classList.add('scale-100');
+      }, 15);
+    }
+
+    function closeModal() {
+      videoModal.classList.add('opacity-0');
+      modalCard.classList.remove('scale-100');
+      modalCard.classList.add('scale-95');
+
+      setTimeout(() => {
+        videoModal.classList.add('hidden');
+        videoIframe.src = '';
+        document.body.style.overflow = '';
+        currentActiveWork = null;
+      }, 250);
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+
+    // Close when clicking modal backdrop
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !videoModal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+
+    const toast = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+
+    function showToast(message) {
+      toastMessage.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2800);
+    }
+
+    function copyToClipboardFallback(text) {
+      const tempInput = document.createElement('input');
+      tempInput.style.position = 'absolute';
+      tempInput.style.left = '-9999px';
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        return true;
+      } catch (err) {
+        return false;
+      } finally {
+        document.body.removeChild(tempInput);
+      }
+    }
+
+    document.getElementById('copyEmailBtn').addEventListener('click', () => {
+      const url = window.location.href;
+      copyToClipboardFallback(url);
+      showToast('Portfolio link copied to clipboard!');
+    });
+
+    copyProjectLinkBtn.addEventListener('click', () => {
+      if (currentActiveWork && currentActiveWork.url) {
+        copyToClipboardFallback(currentActiveWork.url);
+        showToast(`Copied direct link for "${currentActiveWork.title}"`);
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderWorks('all');
+      renderDecks();
+    });
+  </script>
+</body>
+</html>
